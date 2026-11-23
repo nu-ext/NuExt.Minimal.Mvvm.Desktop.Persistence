@@ -2,10 +2,10 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.1;netstandard2.0;net11.0;net10.0;net9.0;net8.0;net471;net462</TargetFrameworks>
-    <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Description>Minimal MVVM Desktop Persistence Library</Description>
-    <RootNamespace>Minimal.Mvvm.Desktop.Persistence</RootNamespace>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Description>SQLite persistence layer for desktop MVVM applications, combining NuExt.Minimal.Mvvm.Desktop with NuExt.System.Data.SQLite: data access for MVVM models with typed accessors and change-aware writes.</Description>
+    <RootNamespace>Minimal.Mvvm.Persistence</RootNamespace>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);1591;NETSDK1233</NoWarn>
     <VersionPrefix>0.9.5</VersionPrefix>
