@@ -19,6 +19,9 @@
 ## API Overview
 
 - **`KeyValueSettingDal`**: reads and writes key/value settings of an owner row - loads `KeyValueSetting` models and saves only changed rows.
+- **`AppVersionDal`**: stores application versions that own settings sets - finds the current version row, reads the latest one, and creates new rows.
+- **`CreateAppSettings`**: migration in `Minimal.Mvvm.Persistence.Migrations` that creates the application version table, the key/value settings table, and the initial version row.
+- **`AppVersionKey`**: settings set key that keeps settings of different application versions apart - only the major and minor version components are significant.
 
 ## Settings storage
 
