@@ -12,6 +12,7 @@
 
 - **Settings in a database** - `KeyValueSetting` models are read from and written to a settings table without a separate DTO layer.
 - **Change-aware writes** - only rows whose stored value or value type actually changed are written, independent of the change tracking state.
+- **Database bootstrap** - `SQLiteDatabaseInitializer` prepares the database directory and builds a validated migration plan that the application extends with its own scopes.
 - **Explicit transactions** - operations run inside a caller-owned `SQLiteDbContext`, so settings reads and writes join the surrounding unit of work.
 - **Provider foundation** - built on the `NuExt.System.Data.SQLite` DAL infrastructure instead of an ORM.
 - **No UI framework** - no WPF, Avalonia, WinUI, or MAUI reference.
@@ -22,6 +23,7 @@
 - **`AppVersionDal`**: stores application versions that own settings sets - finds the current version row, reads the latest one, and creates new rows.
 - **`CreateAppSettings`**: migration in `Minimal.Mvvm.Persistence.Migrations` that creates the application version table, the key/value settings table, and the initial version row.
 - **`AppVersionKey`**: settings set key that keeps settings of different application versions apart - only the major and minor version components are significant.
+- **`SQLiteDatabaseInitializer`**: application database bootstrap - prepares the database directory, exposes a connection factory, and builds a validated migration plan for a single scope; the recorded version defaults to the entry assembly version.
 
 ## Settings storage
 
