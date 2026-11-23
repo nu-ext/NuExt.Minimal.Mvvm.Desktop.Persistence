@@ -13,8 +13,8 @@ namespace Minimal.Mvvm.Persistence;
 /// </summary>
 /// <remarks>
 /// The table is expected to contain an owner id column plus name, raw value and value type columns.
-/// The value type is persisted as a token from <see cref="SettingValueTypes"/> and is converted to
-/// <see cref="Type"/> only at this boundary.
+/// The value type is persisted as a stable token (for example <c>string</c> or <c>integer</c>) and is
+/// converted to <see cref="Type"/> only at this boundary.
 /// </remarks>
 public sealed class KeyValueSettingDal(Func<SQLiteDbConnection> createConnection) : SQLiteDalBase(createConnection)
 {
@@ -36,11 +36,25 @@ public sealed class KeyValueSettingDal(Func<SQLiteDbConnection> createConnection
         Debug.Assert(s_columns[ColumnIndex.ValueType] == "value_type", "ColumnIndex.ValueType does not match s_columns");
     }
 
+    /// <summary>
+    /// Gets the name of the table that stores the settings.
+    /// </summary>
     public required string TableName { get; init; }
 
+    /// <summary>
+    /// Gets the name of the owner id column of the settings table.
+    /// </summary>
     public required string IdName { get; init; }
 
-    public ValueTask<List<KeyValueSetting>> LoadSettingsAsync(SQLiteDbContext context, long id, CancellationToken cancellationToken)
+    /// <summary>
+    /// Loads the settings stored for the specified owner.
+    /// </summary>
+    /// <param name="context">The database context, or <see langword="null"/> to create an owned one.</param>
+    /// <param name="id">The owner row identifier.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>The settings of the owner; an empty list when no rows are stored.</returns>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="id"/> is zero or negative.</exception>
+    public ValueTask<List<KeyValueSetting>> LoadSettingsAsync(SQLiteDbContext? context, long id, CancellationToken cancellationToken)
     {
         Debug.Assert(id > 0);
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(id);
@@ -76,7 +90,21 @@ public sealed class KeyValueSettingDal(Func<SQLiteDbConnection> createConnection
         }
     }
 
-    public ValueTask<int> SaveSettingsAsync(SQLiteDbContext context, long id, ICollection<KeyValueSetting> settings, CancellationToken cancellationToken)
+    /// <summary>
+    /// Saves the specified settings for the owner.
+    /// </summary>
+    /// <param name="context">The database context, or <see langword="null"/> to create an owned one.</param>
+    /// <param name="id">The owner row identifier.</param>
+    /// <param name="settings">The settings to persist.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>The number of written rows.</returns>
+    /// <remarks>
+    /// Only rows that differ from the stored values are written, so the result can be smaller than the number of
+    /// settings, and can be zero when nothing changed.
+    /// </remarks>
+    /// <exception cref="ArgumentNullException"><paramref name="settings"/> is <see langword="null"/>.</exception>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="id"/> is zero or negative.</exception>
+    public ValueTask<int> SaveSettingsAsync(SQLiteDbContext? context, long id, ICollection<KeyValueSetting> settings, CancellationToken cancellationToken)
     {
         Debug.Assert(id > 0);
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(id);
