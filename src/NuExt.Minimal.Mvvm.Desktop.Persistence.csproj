@@ -8,12 +8,12 @@
     <RootNamespace>Minimal.Mvvm.Persistence</RootNamespace>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);NETSDK1233</NoWarn>
-    <VersionPrefix>0.9.8</VersionPrefix>
+    <VersionPrefix>0.9.9</VersionPrefix>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(NuExt_UseLocalProjects)' != 'true'">
-    <PackageReference Include="NuExt.Minimal.Mvvm.Desktop" Version="0.9.8" />
-    <PackageReference Include="NuExt.System.Data.SQLite" Version="0.9.5" />
+    <PackageReference Include="NuExt.Minimal.Mvvm.Desktop" Version="0.9.9" />
+    <PackageReference Include="NuExt.System.Data.SQLite" Version="0.9.6" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(NuExt_UseLocalProjects)' == 'true'">
